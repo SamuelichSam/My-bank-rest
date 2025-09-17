@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_DB: bank_cards_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Sam2304808
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
@@ -27,7 +27,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bank_cards_db
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: Sam2304808
+      SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_LIQUIBASE_ENABLED: true
     ports:
       - "8080:8080"

@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/bank_cards_db
     username: postgres
-    password: Sam2304808
+    password: postgres
   jpa:
     properties:
       hibernate:

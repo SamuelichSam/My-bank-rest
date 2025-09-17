@@ -146,14 +146,14 @@ public class CardServiceImpl implements UserCardService, AdminCardService {
     @Override
     @Transactional
     public CardResponseDto updateCardStatus(Long cardId, CardStatus status) {
-            Card card = cardRepository.findById(cardId)
-                    .orElseThrow(() -> new CardNotFoundException("Card not found with id: " + cardId));
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new CardNotFoundException("Card not found with id: " + cardId));
 
-            if (card.isExpired() && status.equals(CardStatus.ACTIVE)) {
-                throw new OperationNotAllowedException("Cannot activate expired card");
-            }
-            card.setStatus(status);
-            Card updatedCard = cardRepository.save(card);
+        if (card.isExpired() && status.equals(CardStatus.ACTIVE)) {
+            throw new OperationNotAllowedException("Cannot activate expired card");
+        }
+        card.setStatus(status);
+        Card updatedCard = cardRepository.save(card);
         return CardResponseDto.fromEntity(updatedCard);
     }
 

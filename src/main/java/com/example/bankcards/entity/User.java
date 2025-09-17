@@ -24,7 +24,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
     private UserRole userRole;
-    private boolean enabled =true;
+    private boolean enabled = true;
     @OneToMany(mappedBy = "user")
     private List<Card> cards;
 

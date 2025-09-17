@@ -84,7 +84,6 @@ class AuthServiceTest {
 
     @Test
     void authenticate_ShouldAuthenticateUserSuccessfully() {
-        // Arrange
         AuthRequestDto request = new AuthRequestDto("testuser", "password");
         User user = new User();
         user.setId(1L);
@@ -125,7 +124,6 @@ class AuthServiceTest {
 
     @Test
     void authenticate_ShouldThrowBadCredentialsException_WhenPasswordInvalid() {
-        // Arrange
         AuthRequestDto request = new AuthRequestDto("testuser", "wrongpassword");
         User user = new User();
         user.setId(1L);
@@ -150,7 +148,6 @@ class AuthServiceTest {
 
     @Test
     void createAuthResponse_ShouldCreateCorrectResponse() {
-        // Arrange
         RegisterRequestDto request = new RegisterRequestDto("testuser", "test@email.com", "password");
         User user = new User();
         user.setId(1L);

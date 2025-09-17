@@ -32,6 +32,7 @@ public class CardEncryptionUtil {
             throw new RuntimeException("Error encrypting data", e);
         }
     }
+
     public String decrypt(String encryptData) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);

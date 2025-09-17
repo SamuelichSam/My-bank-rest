@@ -29,24 +29,24 @@ public class AdminCardController {
     @GetMapping
     @Operation(summary = "Получить все карты (только для ADMIN)")
     public ResponseEntity<Page<CardResponseDto>> getAllCards(@Valid
-            @PageableDefault(size = 20) Pageable pageable,
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) CardStatus status) {
+                                                             @PageableDefault(size = 20) Pageable pageable,
+                                                             @RequestParam(required = false) String search,
+                                                             @RequestParam(required = false) CardStatus status) {
         return ResponseEntity.ok(cardService.getAllCards(search, status, pageable));
     }
 
     @PostMapping
     @Operation(summary = "Создать новую карту (только для ADMIN)")
     public ResponseEntity<CardResponseDto> createCard(@Valid
-            @RequestBody CreateCardRequestDto request) {
+                                                      @RequestBody CreateCardRequestDto request) {
         return ResponseEntity.ok(cardService.createCard(request));
     }
 
     @PostMapping("/{cardId}/status")
     @Operation(summary = "Изменить статус карты ( только для ADMIN )")
     public ResponseEntity<CardResponseDto> updateCardStatus(@Valid
-            @PathVariable Long cardId,
-            @RequestParam CardStatus status) {
+                                                            @PathVariable Long cardId,
+                                                            @RequestParam CardStatus status) {
         return ResponseEntity.ok(cardService.updateCardStatus(cardId, status));
     }
 

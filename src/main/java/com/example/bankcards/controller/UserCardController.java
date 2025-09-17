@@ -47,8 +47,8 @@ public class UserCardController {
     @PostMapping("/transfer")
     @Operation(summary = "Перевод между своими картами")
     public ResponseEntity<Void> transferBetweenCards(@Valid
-            @RequestBody TransferRequestDto transferRequestDto,
-            @AuthenticationPrincipal User user) {
+                                                     @RequestBody TransferRequestDto transferRequestDto,
+                                                     @AuthenticationPrincipal User user) {
         cardService.transferBetweenCards(transferRequestDto, user);
         return ResponseEntity.ok().build();
     }

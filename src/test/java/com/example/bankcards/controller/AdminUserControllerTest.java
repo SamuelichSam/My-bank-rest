@@ -66,13 +66,11 @@ class AdminUserControllerTest {
 
     @Test
     void updateUser_ValidRequest_ShouldUpdateUser() throws Exception {
-        // Arrange
         UserUpdateDto updateDto = new UserUpdateDto("newuser", "new@email.com", true, UserRole.USER);
         UserDto userDto = new UserDto(1L, "newuser", "new@email.com", true, UserRole.USER, null);
 
         when(userService.updateUser(eq(1L), any(UserUpdateDto.class))).thenReturn(userDto);
 
-        // Act & Assert
         mockMvc.perform(post("/admin/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDto)))
@@ -85,10 +83,8 @@ class AdminUserControllerTest {
 
     @Test
     void updateUser_InvalidUserId_ShouldReturnBadRequest() throws Exception {
-        // Arrange
         UserUpdateDto updateDto = new UserUpdateDto("newuser", "new@email.com", true, UserRole.USER);
 
-        // Act & Assert
         mockMvc.perform(post("/admin/users/invalid")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDto)))
@@ -97,10 +93,8 @@ class AdminUserControllerTest {
 
     @Test
     void deleteUser_ValidRequest_ShouldDeleteUser() throws Exception {
-        // Arrange
         doNothing().when(userService).deleteUser(1L);
 
-        // Act & Assert
         mockMvc.perform(delete("/admin/users/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
@@ -110,11 +104,9 @@ class AdminUserControllerTest {
 
     @Test
     void getUserById_ValidRequest_ShouldReturnUser() throws Exception {
-        // Arrange
         UserDto userDto = new UserDto(1L, "testuser", "test@email.com", true, UserRole.USER, null);
         when(userService.getUserById(1L)).thenReturn(userDto);
 
-        // Act & Assert
         mockMvc.perform(get("/admin/users/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -126,13 +118,11 @@ class AdminUserControllerTest {
 
     @Test
     void getAllUsers_WithoutSearch_ShouldReturnUsers() throws Exception {
-        // Arrange
         UserDto userDto = new UserDto(1L, "testuser", "test@email.com", true, UserRole.USER, null);
         Page<UserDto> page = new PageImpl<>(List.of(userDto), PageRequest.of(0, 20), 1);
 
         when(userService.getAllUsers(eq(null), any(Pageable.class))).thenReturn(page);
 
-        // Act & Assert
         mockMvc.perform(get("/admin/users")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -142,14 +132,12 @@ class AdminUserControllerTest {
 
     @Test
     void getAllUsers_WithSearch_ShouldReturnFilteredUsers() throws Exception {
-        // Arrange
         UserDto userDto = new UserDto(1L, "testuser", "test@email.com", true, UserRole.USER, null);
 
         Page<UserDto> page = new PageImpl<>(List.of(userDto), PageRequest.of(0, 20), 1);
 
         when(userService.getAllUsers(eq("test"), any(Pageable.class))).thenReturn(page);
 
-        // Act & Assert
         mockMvc.perform(get("/admin/users")
                         .param("search", "test")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -160,10 +148,8 @@ class AdminUserControllerTest {
 
     @Test
     void blockUser_ValidRequest_ShouldBlockUser() throws Exception {
-        // Arrange
         doNothing().when(userService).blockUser(1L);
 
-        // Act & Assert
         mockMvc.perform(patch("/admin/users/1/block")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -173,10 +159,8 @@ class AdminUserControllerTest {
 
     @Test
     void unblockUser_ValidRequest_ShouldUnblockUser() throws Exception {
-        // Arrange
         doNothing().when(userService).unblockUser(1L);
 
-        // Act & Assert
         mockMvc.perform(patch("/admin/users/1/unblock")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -186,7 +170,6 @@ class AdminUserControllerTest {
 
     @Test
     void updateUser_MissingRequestBody_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(post("/admin/users/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -194,10 +177,8 @@ class AdminUserControllerTest {
 
     @Test
     void updateUser_InvalidContentType_ShouldReturnUnsupportedMediaType() throws Exception {
-        // Arrange
         UserUpdateDto updateDto = new UserUpdateDto("newuser", "new@email.com", true, UserRole.USER);
 
-        // Act & Assert
         mockMvc.perform(post("/admin/users/1")
                         .contentType(MediaType.TEXT_PLAIN)
                         .content(objectMapper.writeValueAsString(updateDto)))
@@ -206,7 +187,6 @@ class AdminUserControllerTest {
 
     @Test
     void deleteUser_InvalidUserId_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(delete("/admin/users/invalid")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -214,7 +194,6 @@ class AdminUserControllerTest {
 
     @Test
     void getUserById_InvalidUserId_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(get("/admin/users/invalid")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -222,7 +201,6 @@ class AdminUserControllerTest {
 
     @Test
     void blockUser_InvalidUserId_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(patch("/admin/users/invalid/block")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -230,7 +208,6 @@ class AdminUserControllerTest {
 
     @Test
     void unblockUser_InvalidUserId_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(patch("/admin/users/invalid/unblock")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());

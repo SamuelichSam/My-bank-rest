@@ -72,7 +72,6 @@ class UserCardControllerTest {
 
     @Test
     void getCard_ValidCardId_ShouldReturnCard() throws Exception {
-        // Arrange
         CardResponseDto cardResponse = new CardResponseDto(
                 1L, "************7890", "John Doe",
                 LocalDate.now().plusYears(1), CardStatus.ACTIVE, new BigDecimal("1000.00")
@@ -80,7 +79,6 @@ class UserCardControllerTest {
 
         when(cardService.getCardById(eq(1L), any(User.class))).thenReturn(cardResponse);
 
-        // Act & Assert
         mockMvc.perform(get("/cards/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -92,7 +90,6 @@ class UserCardControllerTest {
 
     @Test
     void getCard_InvalidCardId_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(get("/cards/invalid")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -100,12 +97,10 @@ class UserCardControllerTest {
 
     @Test
     void transferBetweenCards_ValidRequest_ShouldTransfer() throws Exception {
-        // Arrange
         TransferRequestDto transferRequest = new TransferRequestDto(
                 1L, 2L, new BigDecimal("100.00"), "description");
         doNothing().when(cardService).transferBetweenCards(any(TransferRequestDto.class), any(User.class));
 
-        // Act & Assert
         mockMvc.perform(post("/cards/transfer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(transferRequest)))
@@ -116,10 +111,8 @@ class UserCardControllerTest {
 
     @Test
     void transferBetweenCards_InvalidRequest_ShouldReturnBadRequest() throws Exception {
-        // Arrange - невалидный запрос
         TransferRequestDto invalidRequest = new TransferRequestDto(null, null, null, null);
 
-        // Act & Assert
         mockMvc.perform(post("/cards/transfer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
@@ -128,10 +121,8 @@ class UserCardControllerTest {
 
     @Test
     void getCardBalance_ValidCardId_ShouldReturnBalance() throws Exception {
-        // Arrange
         when(cardService.getCardBalance(eq(1L), any(User.class))).thenReturn(new BigDecimal("1000.00"));
 
-        // Act & Assert
         mockMvc.perform(get("/cards/1/balance")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -142,7 +133,6 @@ class UserCardControllerTest {
 
     @Test
     void getCardBalance_InvalidCardId_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(get("/cards/invalid/balance")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -150,10 +140,8 @@ class UserCardControllerTest {
 
     @Test
     void requestBlockCard_ValidCardId_ShouldRequestBlock() throws Exception {
-        // Arrange
         doNothing().when(cardService).requestBlockCard(eq(1L), any(User.class));
 
-        // Act & Assert
         mockMvc.perform(post("/cards/1/block-request")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -163,7 +151,6 @@ class UserCardControllerTest {
 
     @Test
     void requestBlockCard_InvalidCardId_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(post("/cards/invalid/block-request")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -171,7 +158,6 @@ class UserCardControllerTest {
 
     @Test
     void transferBetweenCards_MissingRequestBody_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(post("/cards/transfer")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -179,11 +165,9 @@ class UserCardControllerTest {
 
     @Test
     void transferBetweenCards_InvalidContentType_ShouldReturnUnsupportedMediaType() throws Exception {
-        // Arrange
         TransferRequestDto transferRequest = new TransferRequestDto(
                 1L, 2L, new BigDecimal("100.00"), "description");
 
-        // Act & Assert
         mockMvc.perform(post("/cards/transfer")
                         .contentType(MediaType.TEXT_PLAIN)
                         .content(objectMapper.writeValueAsString(transferRequest)))

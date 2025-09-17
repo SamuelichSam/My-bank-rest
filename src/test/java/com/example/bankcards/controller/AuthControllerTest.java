@@ -38,11 +38,9 @@ class AuthControllerTest {
 
     @Test
     void register_InvalidRequest_ShouldReturnBadRequest() throws Exception {
-        // Arrange - создаем невалидный запрос (без обязательных полей)
         RegisterRequestDto invalidRequest = new RegisterRequestDto(
                 "", "", "");
 
-        // Act & Assert
         mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
@@ -53,7 +51,6 @@ class AuthControllerTest {
     void login_InvalidRequest_ShouldReturnBadRequest() throws Exception {
         AuthRequestDto invalidRequest = new AuthRequestDto("", "");
 
-        // Act & Assert
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
@@ -62,7 +59,6 @@ class AuthControllerTest {
 
     @Test
     void login_MissingRequestBody_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -70,7 +66,6 @@ class AuthControllerTest {
 
     @Test
     void register_MissingRequestBody_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -78,10 +73,8 @@ class AuthControllerTest {
 
     @Test
     void login_WithInvalidContentType_ShouldReturnUnsupportedMediaType() throws Exception {
-        // Arrange
         AuthRequestDto authRequest = new AuthRequestDto("testuser", "password123");
 
-        // Act & Assert
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.TEXT_PLAIN)
                         .content(objectMapper.writeValueAsString(authRequest)))
@@ -90,11 +83,9 @@ class AuthControllerTest {
 
     @Test
     void register_WithInvalidContentType_ShouldReturnUnsupportedMediaType() throws Exception {
-        // Arrange
         RegisterRequestDto registerRequest = new RegisterRequestDto(
                 "testuser", "test@example.com", "password123");
 
-        // Act & Assert
         mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.TEXT_PLAIN)
                         .content(objectMapper.writeValueAsString(registerRequest)))

@@ -80,19 +80,16 @@ class AdminCardControllerTest {
 
     @Test
     void getAllCards_WithSearchAndStatus_ShouldReturnCards() throws Exception {
-        // Arrange
         CardResponseDto cardResponse = new CardResponseDto(
                 1L, "************7890", "John Doe",
                 LocalDate.now().plusYears(1), CardStatus.ACTIVE, new BigDecimal("1000.00")
         );
 
-        // Создаем минимальный Page объект
         Page<CardResponseDto> page = new PageImpl<>(List.of(cardResponse), PageRequest.of(0, 20), 1);
 
         when(cardService.getAllCards(eq("test"), eq(CardStatus.ACTIVE), any(Pageable.class)))
                 .thenReturn(page);
 
-        // Act
         MvcResult result = mockMvc.perform(get("/admin/cards")
                         .param("search", "test")
                         .param("status", "ACTIVE")
@@ -100,11 +97,9 @@ class AdminCardControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        // Для отладки посмотрим что возвращается
         String response = result.getResponse().getContentAsString();
         System.out.println("Response: " + response);
 
-        // Assert
         mockMvc.perform(get("/admin/cards")
                         .param("search", "test")
                         .param("status", "ACTIVE")
@@ -115,7 +110,6 @@ class AdminCardControllerTest {
 
     @Test
     void getAllCards_WithoutParams_ShouldReturnCards() throws Exception {
-        // Arrange
         CardResponseDto cardResponse = new CardResponseDto(
                 1L, "************7890", "John Doe",
                 LocalDate.now().plusYears(1), CardStatus.ACTIVE, new BigDecimal("1000.00"));
@@ -125,18 +119,15 @@ class AdminCardControllerTest {
         when(cardService.getAllCards(eq(null), eq(null), any(Pageable.class)))
                 .thenReturn(page);
 
-        // Act & Assert
         mockMvc.perform(get("/admin/cards")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        // Проверяем что сервис был вызван с правильными параметрами
         verify(cardService).getAllCards(eq(null), eq(null), any(Pageable.class));
     }
 
     @Test
     void createCard_ValidRequest_ShouldCreateCard() throws Exception {
-        // Arrange - используем правильный DTO для запроса
         CreateCardRequestDto request = new CreateCardRequestDto(
                 "1234567890123456",
                 "John Doe",
@@ -155,7 +146,6 @@ class AdminCardControllerTest {
 
         when(cardService.createCard(any(CreateCardRequestDto.class))).thenReturn(response);
 
-        // Act & Assert
         mockMvc.perform(post("/admin/cards")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -172,7 +162,6 @@ class AdminCardControllerTest {
                 null, null, null, null, null
         );
 
-        // Act & Assert
         mockMvc.perform(post("/admin/cards")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
@@ -188,7 +177,6 @@ class AdminCardControllerTest {
 
         when(cardService.updateCardStatus(eq(1L), eq(CardStatus.BLOCKED))).thenReturn(response);
 
-        // Act & Assert
         mockMvc.perform(post("/admin/cards/1/status")
                         .param("status", "BLOCKED")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -202,7 +190,6 @@ class AdminCardControllerTest {
 
     @Test
     void updateCardStatus_InvalidStatus_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(post("/admin/cards/1/status")
                         .param("status", "INVALID_STATUS")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -211,7 +198,6 @@ class AdminCardControllerTest {
 
     @Test
     void updateCardStatus_MissingStatusParam_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(post("/admin/cards/1/status")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -219,10 +205,8 @@ class AdminCardControllerTest {
 
     @Test
     void deleteCard_ValidRequest_ShouldDeleteCard() throws Exception {
-        // Arrange
         doNothing().when(cardService).deleteCard(1L);
 
-        // Act & Assert
         mockMvc.perform(delete("/admin/cards/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
@@ -232,7 +216,6 @@ class AdminCardControllerTest {
 
     @Test
     void deleteCard_InvalidCardId_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(delete("/admin/cards/abc") // нечисловой ID
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -240,7 +223,6 @@ class AdminCardControllerTest {
 
     @Test
     void createCard_MissingRequestBody_ShouldReturnBadRequest() throws Exception {
-        // Act & Assert
         mockMvc.perform(post("/admin/cards")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -248,12 +230,10 @@ class AdminCardControllerTest {
 
     @Test
     void createCard_WithInvalidContentType_ShouldReturnUnsupportedMediaType() throws Exception {
-        // Arrange
         CardResponseDto request = new CardResponseDto(
                 1L, "************7890", "John Doe",
                 LocalDate.now().plusYears(1), CardStatus.ACTIVE, new BigDecimal("1000.00"));
 
-        // Act & Assert
         mockMvc.perform(post("/admin/cards")
                         .contentType(MediaType.TEXT_PLAIN)
                         .content(objectMapper.writeValueAsString(request)))

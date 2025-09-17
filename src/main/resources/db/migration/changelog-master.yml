@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/changes/001-initial-schema.yml
+  - include:
+      file: db/migration/changes/002-insert-test-data.yml
+  - include:
+      file: db/migration/changes/003-add-indexes.yml
+  - include:
+      file: db/migration/changes/004-add-constraints.yml

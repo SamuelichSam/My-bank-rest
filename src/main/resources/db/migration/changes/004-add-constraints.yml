@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: system
+      changes:
+        - addNotNullConstraint:
+            tableName: users
+            columnName: username
+            constraintName: nn_users_username
+
+        - addNotNullConstraint:
+            tableName: users
+            columnName: email
+            constraintName: nn_users_email
+
+        - addNotNullConstraint:
+            tableName: users
+            columnName: password
+            constraintName: nn_users_password
+
+        - addNotNullConstraint:
+            tableName: users
+            columnName: user_role
+            constraintName: nn_users_role
+
+        - addNotNullConstraint:
+            tableName: bank_cards
+            columnName: card_number
+            constraintName: nn_bank_cards_card_number
+
+        - addNotNullConstraint:
+            tableName: bank_cards
+            columnName: card_holder_name
+            constraintName: nn_bank_cards_holder_name
+
+        - addNotNullConstraint:
+            tableName: bank_cards
+            columnName: expiration_date
+            constraintName: nn_bank_cards_expiration
+
+        - addNotNullConstraint:
+            tableName: bank_cards
+            columnName: status
+            constraintName: nn_bank_cards_status
+
+        - sql:
+           sql: ALTER TABLE bank_cards ADD CONSTRAINT chk_bank_cards_balance CHECK (balance >= 0)
+
+        - sql:
+           sql: ALTER TABLE bank_cards ADD CONSTRAINT chk_bank_cards_status CHECK (status IN ('ACTIVE', 'BLOCKED', 'EXPIRED'))
+
+        - sql:
+           sql: ALTER TABLE users ADD CONSTRAINT chk_users_role CHECK (user_role IN ('USER', 'ADMIN'))

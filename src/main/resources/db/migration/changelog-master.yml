@@ -1,4 +1,10 @@
 databaseChangeLog:
+  - - preConditions:
+        - dbms:
+            type: postgresql
+        - runningAs:
+            username: postgres
+
   - include:
       file: db/migration/changes/001-initial-schema.yml
   - include:

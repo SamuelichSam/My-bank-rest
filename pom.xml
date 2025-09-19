@@ -167,6 +167,25 @@
                     <outputDir>${project.basedir}/src/main/resources</outputDir>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
+                    <windowtitle>Bank Cards API</windowtitle>
+                    <doctitle>Bank Cards Management System</doctitle>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
